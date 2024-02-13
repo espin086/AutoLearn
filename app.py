@@ -47,7 +47,15 @@ elif choice == "ML":
             st.dataframe(compare_df)
             regression_save_model(best_model, "best_model")
         elif analysis_type == "Classification":
-
+            classification_setup(df, target=target)
+            setup_df = classification_pull()
+            st.info("This is the ML Experiment Settings")
+            st.dataframe(setup_df)
+            best_model = classification_compare_models()
+            compare_df = classification_pull()
+            st.info("This is the Model Comparison")
+            st.dataframe(compare_df)
+            classification_save_model(best_model, "best_model")
 elif choice == "Download":
     with open("best_model.pkl", "rb") as f:
         st.download_button("Download the Model", f, "trained_model.pkl")
