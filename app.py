@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import streamlit as st
-import pandas_profiling as pp
+from ydata_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
 
 from pycaret.regression import setup, compare_models, pull, save_model
@@ -28,7 +28,7 @@ if choice == "Upload":
         df.to_csv("sourcedata.csv", index=False)
 elif choice == "Profiling":
     st.title("Automated Exploratory Data Analysis")
-    profile_report = df.profile_report()
+    profile_report = ProfileReport(df)
     st_profile_report(profile_report)
 elif choice == "ML":
     st.write("ML")
