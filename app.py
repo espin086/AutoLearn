@@ -1,10 +1,11 @@
 import pandas as pd
 import os
 import streamlit as st
-import pandas_profiling as pp
+from ydata_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
 
-from pycaret.regression import setup, compare_models, pull, save_model
+from pycaret.classification import setup as classification_setup, compare_models as classification_compare_models, pull as classification_pull, save_model as classification_save_model
+from pycaret.regression import setup as regression_setup, compare_models as regression_compare_models, pull as regression_pull, save_model as regression_save_model
 
 
 with st.sidebar:
@@ -28,21 +29,33 @@ if choice == "Upload":
         df.to_csv("sourcedata.csv", index=False)
 elif choice == "Profiling":
     st.title("Automated Exploratory Data Analysis")
-    profile_report = df.profile_report()
+    profile_report = ProfileReport(df)
     st_profile_report(profile_report)
 elif choice == "ML":
     st.write("ML")
     target = st.selectbox("Select Target Variable", df.columns)
+    analysis_type = st.radio("Select Analysis Type", ["Regression", "Classification"])
     if st.button("Run Model"):
-        setup(df, target=target)
-        setup_df = pull()
-        st.info("This is the ML Experiment Settiings")
-        st.dataframe(setup_df)
-        best_model = compare_models()
-        compare_df = pull()
-        st.info("This is the Model Comparison")
-        st.dataframe(compare_df)
-        save_model(best_model, "best_model")
+        if analysis_type == "Regression":
+            regression_setup(df, target=target)
+            setup_df = regression_pull()
+            st.info("This is the ML Experiment Settings")
+            st.dataframe(setup_df)
+            best_model = regression_compare_models()
+            compare_df = regression_pull()
+            st.info("This is the Model Comparison")
+            st.dataframe(compare_df)
+            regression_save_model(best_model, "best_model")
+        elif analysis_type == "Classification":
+            classification_setup(df, target=target)
+            setup_df = classification_pull()
+            st.info("This is the ML Experiment Settings")
+            st.dataframe(setup_df)
+            best_model = classification_compare_models()
+            compare_df = classification_pull()
+            st.info("This is the Model Comparison")
+            st.dataframe(compare_df)
+            classification_save_model(best_model, "best_model")
 elif choice == "Download":
     with open("best_model.pkl", "rb") as f:
         st.download_button("Download the Model", f, "trained_model.pkl")
