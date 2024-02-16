@@ -69,7 +69,34 @@ elif choice == "ML":
             models = ['kmeans', 'hclust', 'ap', 'meanshift', 'sc', 'dbscan', 'optics', 'birch']
             all_metrics_df = pd.DataFrame()
 
+            for model_name in models:
+                # Train the clustering model using PyCaret
+                model = clustering_create_model(model_name)
+                print(model)
+                metrics_df = clustering_pull()
+                
+                # Add the 'model_name' column to the metrics DataFrame
+                metrics_df['model_name'] = model_name
+                
+                # Concatenate the current metrics DataFrame to the overall DataFrame
+                all_metrics_df = pd.concat([all_metrics_df, metrics_df], ignore_index=True)
 
+                # Check if the silhouette score for the current model is better than the best so far
+                current_silhouette = all_metrics_df.loc[all_metrics_df['model_name'] == model_name, 'Silhouette'].values[0]
+                if current_silhouette > best_silhouette:
+                    best_silhouette = current_silhouette
+                    best_model_name = model_name
+
+            all_metrics_df.reset_index(drop=True, inplace=True)
+            print(best_model_name)
+
+            all_metrics_df.set_index('model_name', inplace=True)
+            # Display the DataFrame
+            st.info("This is the Model Comparison")
+            st.dataframe(all_metrics_df)
+            model = clustering_create_model(best_model_name)
+            print(model)
+            clustering_save_model(model, "best_model")
   
 elif choice == "Download":
     with open("best_model.pkl", "rb") as f:
