@@ -84,26 +84,26 @@ The app identifies and displays duplicate rows in the dataset.
 
 The app provides settings for running an automated machine learning experiment, including target variable selection, feature engineering, and model selection.
 
-* Regression
+* **Regression**
 ![Regression Model Experiment](images/demo_regression_model_experiment.png)
 
-* Classification
+* **Classification**
 ![Classification Model Experiment](images/demo_classification_model_experiment.png)
 
-* Clustering
+* **Clustering**
 ![Clustering Model Experiment](images/demo_clustering_model_experiment.png)
 
 ### Model Leaderboard
 
 The app displays a leaderboard of trained machine learning models, ranked by their performance metrics.
 
-* Regression
+* **Regression**
 ![Regression Model Leaderboard](images/demo_regression_model_leaderboard.png)
 
-* Classification
+* **Classification**
 ![Classification Model Leaderboard](images/demo_classification_model_leaderboard.png)
 
-* Clustering
+* **Clustering**
 ![Clustering Model Leaderboard](images/demo_clustering_model_leaderboard.png)
 
 ### Download Best Model
