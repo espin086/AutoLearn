@@ -4,10 +4,10 @@ import streamlit as st
 from ydata_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
 
-from pycaret.classification import setup as classification_setup, compare_models as classification_compare_models, pull as classification_pull, save_model as classification_save_model
-from pycaret.regression import setup as regression_setup, compare_models as regression_compare_models, pull as regression_pull, save_model as regression_save_model
-from pycaret.clustering import get_metrics, setup as clustering_setup, pull as clustering_pull, create_model as clustering_create_model, save_model as clustering_save_model
-from sklearn.metrics import silhouette_score, calinski_harabasz_score, davies_bouldin_score
+from pycaret.classification import setup as classification_setup, compare_models as classification_compare_models, pull as classification_pull, save_model as classification_save_model, load_model as classification_load_model
+from pycaret.regression import setup as regression_setup, compare_models as regression_compare_models, pull as regression_pull, save_model as regression_save_model, load_model as regression_load_model
+from pycaret.clustering import setup as clustering_setup, pull as clustering_pull, create_model as clustering_create_model, save_model as clustering_save_model, load_model as clustering_load_model
+
 
 with st.sidebar:
     st.image(
@@ -21,6 +21,9 @@ with st.sidebar:
 if os.path.exists("sourcedata.csv"):
     df = pd.read_csv("sourcedata.csv", index_col=False)
 
+# Initialize session state for analysis_type
+if 'analysis_type' not in st.session_state:
+    st.session_state.analysis_type = None
 
 if choice == "Upload":
     st.title("Upload Your Data for Modeling")
@@ -28,16 +31,18 @@ if choice == "Upload":
     if file:
         df = pd.read_csv(file, index_col=False)
         df.to_csv("sourcedata.csv", index=False)
+
 elif choice == "Profiling":
     st.title("Automated Exploratory Data Analysis")
     profile_report = ProfileReport(df)
     st_profile_report(profile_report)
+
 elif choice == "ML":
     st.write("ML")
-    target = st.selectbox("Select Target Variable (Only for Regression and Classification)", df.columns)
-    analysis_type = st.radio("Select Analysis Type", ["Regression", "Classification", "Clustering"])
+    target = st.selectbox("Select Target Variable (Only for Regression and Classification)", df.columns) 
+    st.session_state.analysis_type = st.radio("Select Analysis Type", ["Regression", "Classification", "Clustering"])
     if st.button("Run Model"):
-        if analysis_type == "Regression":
+        if st.session_state.analysis_type == "Regression":
             regression_setup(df, target=target)
             setup_df = regression_pull()
             st.info("This is the ML Experiment Settings")
@@ -47,7 +52,7 @@ elif choice == "ML":
             st.info("This is the Model Comparison")
             st.dataframe(compare_df)
             regression_save_model(best_model, "best_model")
-        elif analysis_type == "Classification":
+        elif st.session_state.analysis_type == "Classification":
             classification_setup(df, target=target)
             setup_df = classification_pull()
             st.info("This is the ML Experiment Settings")
@@ -57,7 +62,7 @@ elif choice == "ML":
             st.info("This is the Model Comparison")
             st.dataframe(compare_df)
             classification_save_model(best_model, "best_model")
-        elif analysis_type == "Clustering":
+        elif st.session_state.analysis_type == "Clustering":
             best_model_name = None
             best_silhouette = -1
 
@@ -103,4 +108,19 @@ elif choice == "Download":
         st.download_button("Download the Model", f, "trained_model.pkl")
 
 elif choice == "Model Inference":
-    
+    st.title("Upload Your Data for Predictions")
+    file = st.file_uploader("Upload a CSV file", type=["csv"])
+    if file and st.session_state.analysis_type:
+        df_inference = pd.read_csv(file, index_col=False)
+        # Display a message about the successful upload
+        st.success("CSV file uploaded successfully for predictions!")
+        # Load the best model saved in a .pkl file
+        if st.session_state.analysis_type == 'Regression':
+            model = regression_load_model('best_model')
+            st.success("Model loaded successfully for predictions!")
+        elif st.session_state.analysis_type == 'Classification':
+            model = classification_load_model('best_model')
+            st.success("Model loaded successfully for predictions!")
+        elif st.session_state.analysis_type == 'Clustering':
+            model = clustering_load_model('best_model')
+            st.success("Model loaded successfully for predictions!")
