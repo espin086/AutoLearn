@@ -6,7 +6,7 @@ from streamlit_pandas_profiling import st_profile_report
 
 from pycaret.classification import setup as classification_setup, compare_models as classification_compare_models, pull as classification_pull, save_model as classification_save_model, load_model as classification_load_model, predict_model as classification_predict_model
 from pycaret.regression import setup as regression_setup, compare_models as regression_compare_models, pull as regression_pull, save_model as regression_save_model, load_model as regression_load_model, predict_model as regression_predict_model
-from pycaret.clustering import setup as clustering_setup, pull as clustering_pull, create_model as clustering_create_model, save_model as clustering_save_model, load_model as clustering_load_model, predict_model as clustering_predict_model
+from pycaret.clustering import setup as clustering_setup, pull as clustering_pull, create_model as clustering_create_model, save_model as clustering_save_model, load_model as clustering_load_model, assign_model as clustering_assign_model, predict_model as clustering_predict_model
 
 
 with st.sidebar:
@@ -70,10 +70,11 @@ elif choice == "ML":
             setup_df = clustering_pull()
             st.info("This is the Clustering Experiment Settings")
             st.dataframe(setup_df)
-
-            models = ['kmeans', 'hclust', 'ap', 'meanshift', 'sc', 'dbscan', 'optics', 'birch']
+            # Clustering Models: ['kmeans', 'hclust', 'ap', 'meanshift', 'sc', 'dbscan', 'optics', 'birch']
+            # Models has predict_model functionality: ['kmeans', 'ap', 'birch']
+            # Models does not has predict_model functionality: ['hclust', 'meanshift','sc','dbscan', 'optics']
+            models = ['kmeans', 'ap', 'birch']
             all_metrics_df = pd.DataFrame()
-
             for model_name in models:
                 # Train the clustering model using PyCaret
                 model = clustering_create_model(model_name)
@@ -116,25 +117,26 @@ elif choice == "Model Inference":
         st.success("CSV file uploaded successfully for predictions!")
         # Load the best model saved in a .pkl file
         if st.session_state.analysis_type == 'Regression':
-            model = regression_load_model('best_model')
+            regression_model = regression_load_model('best_model')
             st.success("Regression Best Model loaded successfully for predictions!")
-            predictions = regression_predict_model(model, data = df_inference)
+            predictions = regression_predict_model(regression_model, data = df_inference)
             st.subheader("Predictions:")
             st.write(predictions)
             predictions.to_csv("predictions.csv", index=False)
             st.success("Predictions saved to predictions.csv")
         elif st.session_state.analysis_type == 'Classification':
-            model = classification_load_model('best_model')
+            classification_model = classification_load_model('best_model')
             st.success("Classification Best Model loaded successfully for predictions!")
-            predictions = classification_predict_model(model, data = df_inference)
+            predictions = classification_predict_model(classification_model, data = df_inference)
             st.subheader("Predictions:")
             st.write(predictions)
             predictions.to_csv("predictions.csv", index=False)
             st.success("Predictions saved to predictions.csv")
         elif st.session_state.analysis_type == 'Clustering':
-            model = clustering_load_model('best_model')
+            clustering_model = clustering_load_model('best_model')
+            print(clustering_model)
             st.success("Clustering Best Model loaded successfully for predictions!")
-            predictions = clustering_predict_model(model, data = df_inference)
+            predictions = clustering_predict_model(model = clustering_model, data = df_inference)
             st.subheader("Predictions:")
             st.write(predictions)
             predictions.to_csv("predictions.csv", index=False)

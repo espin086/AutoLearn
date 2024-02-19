@@ -118,6 +118,23 @@ The app allows you to download the best-performing machine learning model for fu
 
 ![Download Model](images/demo_download_model.png)
 
+### Model Inference
+
+The app provides settings for obtaining predictions from the best model saved.
+
+* **Regression**
+
+![Regression Model Predictions](images/demo_regression_model_predictions.png)
+
+* **Classification**
+
+![Classification Model Predictions](images/demo_classification_model_predictions.png)
+
+* **Clustering**
+
+![Clustering Model Predictions](images/demo_clustering_model_predictions.png)
+
+
 ## Conclusion
 
 This Streamlit app provides a user-friendly interface for performing automated exploratory data analysis and machine learning model training. It leverages the power of PyCaret and Pandas Data Profiler to simplify the data analysis and model building process.
