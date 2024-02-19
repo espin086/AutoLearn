@@ -14,7 +14,7 @@ with st.sidebar:
         "https://i.etsystatic.com/41369585/r/il/9099ae/4698309797/il_1080xN.4698309797_m5ov.jpg"
     )
     st.title("AutoLearn")
-    choice = st.radio("Navigation", ["Upload", "Profiling", "ML", "Download"])
+    choice = st.radio("Navigation", ["Upload", "Profiling", "ML", "Download", "Model Inference"])
     st.info(
         "This application allows you to build an automated machine learning pipeline using Streamlit, Pandas Profiling, and Pycaret. And it is damnright magic!"
     )
@@ -101,3 +101,6 @@ elif choice == "ML":
 elif choice == "Download":
     with open("best_model.pkl", "rb") as f:
         st.download_button("Download the Model", f, "trained_model.pkl")
+
+elif choice == "Model Inference":
+    
