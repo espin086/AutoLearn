@@ -4,9 +4,9 @@ import streamlit as st
 from ydata_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
 
-from pycaret.classification import setup as classification_setup, compare_models as classification_compare_models, pull as classification_pull, save_model as classification_save_model, load_model as classification_load_model
-from pycaret.regression import setup as regression_setup, compare_models as regression_compare_models, pull as regression_pull, save_model as regression_save_model, load_model as regression_load_model
-from pycaret.clustering import setup as clustering_setup, pull as clustering_pull, create_model as clustering_create_model, save_model as clustering_save_model, load_model as clustering_load_model
+from pycaret.classification import setup as classification_setup, compare_models as classification_compare_models, pull as classification_pull, save_model as classification_save_model, load_model as classification_load_model, predict_model as classification_predict_model
+from pycaret.regression import setup as regression_setup, compare_models as regression_compare_models, pull as regression_pull, save_model as regression_save_model, load_model as regression_load_model, predict_model as regression_predict_model
+from pycaret.clustering import setup as clustering_setup, pull as clustering_pull, create_model as clustering_create_model, save_model as clustering_save_model, load_model as clustering_load_model, predict_model as clustering_predict_model
 
 
 with st.sidebar:
@@ -117,10 +117,25 @@ elif choice == "Model Inference":
         # Load the best model saved in a .pkl file
         if st.session_state.analysis_type == 'Regression':
             model = regression_load_model('best_model')
-            st.success("Model loaded successfully for predictions!")
+            st.success("Regression Best Model loaded successfully for predictions!")
+            predictions = regression_predict_model(model, data = df_inference)
+            st.subheader("Predictions:")
+            st.write(predictions)
+            predictions.to_csv("predictions.csv", index=False)
+            st.success("Predictions saved to predictions.csv")
         elif st.session_state.analysis_type == 'Classification':
             model = classification_load_model('best_model')
-            st.success("Model loaded successfully for predictions!")
+            st.success("Classification Best Model loaded successfully for predictions!")
+            predictions = classification_predict_model(model, data = df_inference)
+            st.subheader("Predictions:")
+            st.write(predictions)
+            predictions.to_csv("predictions.csv", index=False)
+            st.success("Predictions saved to predictions.csv")
         elif st.session_state.analysis_type == 'Clustering':
             model = clustering_load_model('best_model')
-            st.success("Model loaded successfully for predictions!")
+            st.success("Clustering Best Model loaded successfully for predictions!")
+            predictions = clustering_predict_model(model, data = df_inference)
+            st.subheader("Predictions:")
+            st.write(predictions)
+            predictions.to_csv("predictions.csv", index=False)
+            st.success("Predictions saved to predictions.csv")
