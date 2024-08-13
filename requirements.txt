@@ -1,8 +1,7 @@
-pandas==1.5.3
-lightgbm==3.2.1
-ydata-profiling
-lightgbm==3.2.1
-pycaret
-streamlit==1.25.0
-streamlit_pandas_profiling
+pandas
+lightgbm
+ydata-profiling 
+pycaret 
+streamlit
+streamlit_pandas_profiling 
 scikit-learn
