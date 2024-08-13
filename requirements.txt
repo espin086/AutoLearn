@@ -1,7 +1,10 @@
+phik==0.12.0
+scikit-learn
 pandas
 lightgbm
 ydata-profiling 
 pycaret 
 streamlit
 streamlit_pandas_profiling 
-scikit-learn
+
+
