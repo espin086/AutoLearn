@@ -1,3 +1,6 @@
+
+setuptools>=65.5.1
+wheel>=0.38.1
 altair==5.2.0
 annotated-types==0.6.0
 asttokens==2.4.1
