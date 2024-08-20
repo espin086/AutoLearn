@@ -1,5 +1,9 @@
 # 🤖 AutoLearn
 
+<a href="https://buymeacoffee.com/jjespinozag" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174">
+</a>
+
 
 AutoLearn is a powerful tool for data scientists that automates the process of exploratory data analysis (EDA) and machine learning model training. By utilizing PyCaret and Pandas Data Profiler, AutoLearn streamlines the data analysis and model building process, providing several benefits for data scientists:
 
