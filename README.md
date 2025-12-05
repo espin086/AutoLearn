@@ -5,7 +5,7 @@
 </a>
 
 
-AutoLearn is a powerful tool for data scientists that automates the process of exploratory data analysis (EDA) and machine learning model training. By utilizing PyCaret and Pandas Data Profiler, AutoLearn streamlines the data analysis and model building process, providing several benefits for data scientists:
+AutoLearn is a powerful tool for data scientists that automates the process of exploratory data analysis (EDA) and machine learning model training. By utilizing PyCaret and YData Profiling, AutoLearn streamlines the data analysis and model building process, providing several benefits for data scientists:
 
 1. ⏰ **Time-saving**: AutoLearn automates the time-consuming tasks of data profiling, data visualization, and model training. This allows data scientists to focus on higher-level tasks, such as feature engineering and model interpretation.
 
@@ -141,4 +141,4 @@ The app provides settings for obtaining predictions from the best model saved.
 
 ## Conclusion
 
-This Streamlit app provides a user-friendly interface for performing automated exploratory data analysis and machine learning model training. It leverages the power of PyCaret and Pandas Data Profiler to simplify the data analysis and model building process.
+This Streamlit app provides a user-friendly interface for performing automated exploratory data analysis and machine learning model training. It leverages the power of PyCaret and YData Profiling to simplify the data analysis and model building process.

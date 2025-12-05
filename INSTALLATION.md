@@ -3,18 +3,37 @@
 
 ### Clone the Repository
 
-```git clone https://github.com/espin086/AutoLearn.git```
+```bash
+git clone https://github.com/espin086/AutoLearn.git
+cd AutoLearn
+```
 
-### Create and activate a virtual environment 
+### Create and activate a virtual environment
 
-```python3 -m venv venv```
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-```source venv/bin/activate```
+### Install Dependencies
 
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
 ### Run Program
 
-```make run```
+```bash
+make run
+```
 
+Or alternatively:
+
+```bash
+streamlit run app.py
+```
+
+The application will be available at http://localhost:8501
 
 # 

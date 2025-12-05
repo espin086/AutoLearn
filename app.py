@@ -2,7 +2,6 @@ import pandas as pd
 import os
 import streamlit as st
 from ydata_profiling import ProfileReport
-from streamlit_pandas_profiling import st_profile_report
 
 from pycaret.classification import (
     setup as classification_setup,
@@ -60,7 +59,7 @@ if choice == "Upload":
 elif choice == "Profiling":
     st.title("Automated Exploratory Data Analysis")
     profile_report = ProfileReport(df)
-    st_profile_report(profile_report)
+    st.components.v1.html(profile_report.to_html(), height=800, scrolling=True)
 
 elif choice == "ML":
     st.write("ML")
