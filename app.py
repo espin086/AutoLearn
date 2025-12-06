@@ -1,34 +1,45 @@
-import pandas as pd
 import os
+
+import pandas as pd
 import streamlit as st
 from ydata_profiling import ProfileReport
 
 from pycaret.classification import (
-    setup as classification_setup,
     compare_models as classification_compare_models,
-    pull as classification_pull,
-    save_model as classification_save_model,
     load_model as classification_load_model,
     predict_model as classification_predict_model,
+    pull as classification_pull,
+    save_model as classification_save_model,
+    setup as classification_setup,
     tune_model,
 )
+from pycaret.clustering import (
+    assign_model as clustering_assign_model,
+    create_model as clustering_create_model,
+    load_model as clustering_load_model,
+    predict_model as clustering_predict_model,
+    pull as clustering_pull,
+    save_model as clustering_save_model,
+    setup as clustering_setup,
+)
 from pycaret.regression import (
-    setup as regression_setup,
     compare_models as regression_compare_models,
-    pull as regression_pull,
-    save_model as regression_save_model,
     load_model as regression_load_model,
     predict_model as regression_predict_model,
+    pull as regression_pull,
+    save_model as regression_save_model,
+    setup as regression_setup,
 )
-from pycaret.clustering import (
-    setup as clustering_setup,
-    pull as clustering_pull,
-    create_model as clustering_create_model,
-    save_model as clustering_save_model,
-    load_model as clustering_load_model,
-    assign_model as clustering_assign_model,
-    predict_model as clustering_predict_model,
-)
+
+
+def generate_profile(data: pd.DataFrame) -> ProfileReport:
+    """Generate a profiling report for the provided dataframe."""
+    return ProfileReport(data)
+
+
+df = None
+if os.path.exists("sourcedata.csv"):
+    df = pd.read_csv("sourcedata.csv", index_col=False)
 
 
 with st.sidebar:
@@ -36,14 +47,10 @@ with st.sidebar:
         "https://i.etsystatic.com/41369585/r/il/9099ae/4698309797/il_1080xN.4698309797_m5ov.jpg"
     )
     st.title("AutoLearn")
-    choice = st.radio(
-        "Navigation", ["Upload", "Profiling", "ML", "Download", "Model Inference"]
-    )
+    choice = st.radio("Navigation", ["Upload", "ML", "Download", "Model Inference"])
     st.info(
         "This application allows you to build an automated machine learning pipeline using Streamlit, Pandas Profiling, and Pycaret. And it is damnright magic!"
     )
-if os.path.exists("sourcedata.csv"):
-    df = pd.read_csv("sourcedata.csv", index_col=False)
 
 # Initialize session state for analysis_type
 if "analysis_type" not in st.session_state:
@@ -55,13 +62,18 @@ if choice == "Upload":
     if file:
         df = pd.read_csv(file, index_col=False)
         df.to_csv("sourcedata.csv", index=False)
-
-elif choice == "Profiling":
-    st.title("Automated Exploratory Data Analysis")
-    profile_report = ProfileReport(df)
-    st.components.v1.html(profile_report.to_html(), height=800, scrolling=True)
+        st.success("Data uploaded successfully. Generating profiling report...")
+    if df is not None:
+        profile_report = generate_profile(df)
+        st.components.v1.html(profile_report.to_html(), height=800, scrolling=True)
+    else:
+        st.info("Upload a CSV file to automatically generate a profile report.")
 
 elif choice == "ML":
+    if df is None:
+        st.warning("Please upload data first to run ML experiments.")
+        st.stop()
+
     st.write("ML")
     target = st.selectbox(
         "Select Target Variable (Only for Regression and Classification)", df.columns
