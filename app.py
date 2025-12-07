@@ -52,9 +52,11 @@ with st.sidebar:
         "This application allows you to build an automated machine learning pipeline using Streamlit, Pandas Profiling, and Pycaret. And it is damnright magic!"
     )
 
-# Initialize session state for analysis_type
+# Initialize session state
 if "analysis_type" not in st.session_state:
     st.session_state.analysis_type = None
+if "profile_report_html" not in st.session_state:
+    st.session_state.profile_report_html = None
 
 if choice == "Upload":
     st.title("Upload Your Data for Modeling")
@@ -62,10 +64,18 @@ if choice == "Upload":
     if file:
         df = pd.read_csv(file, index_col=False)
         df.to_csv("sourcedata.csv", index=False)
+        # Invalidate cached profile when new data is uploaded
+        st.session_state.profile_report_html = None
         st.success("Data uploaded successfully. Generating profiling report...")
     if df is not None:
-        profile_report = generate_profile(df)
-        st.components.v1.html(profile_report.to_html(), height=800, scrolling=True)
+        # Generate the profile report only once per dataset version to avoid
+        # expensive recomputation on every rerun.
+        if st.session_state.profile_report_html is None:
+            profile_report = generate_profile(df)
+            st.session_state.profile_report_html = profile_report.to_html()
+        st.components.v1.html(
+            st.session_state.profile_report_html, height=800, scrolling=True
+        )
     else:
         st.info("Upload a CSV file to automatically generate a profile report.")
 
