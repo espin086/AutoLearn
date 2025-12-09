@@ -20,6 +20,18 @@ AutoLearn is a powerful tool for data scientists that automates the process of e
 
 5. 🔁 **Reproducibility**: AutoLearn allows data scientists to save and download the best-performing machine learning model for further use. This ensures reproducibility and enables easy deployment of the trained model in production environments.
 
+## 🏗️ Architecture
+
+AutoLearn features a clean, modular architecture with separated UI and backend logic. See [QUICK_START.md](QUICK_START.md) for the complete guide.
+
+### Key Features:
+- **Modular Design**: Separate UI (`ui/`) and backend (`backend/`) modules
+- **Data Management**: Dedicated `data/` folder for CSV storage
+- **Model Management**: Dedicated `models/` folder for trained models
+- **Centralized Configuration**: All settings in `config.py`
+- **Maintainable Code**: Each module < 200 lines with clear responsibilities
+- **Logging**: Comprehensive logging for debugging and monitoring
+
 ## 🔌 Installation
 
 To run this app, please follow the installation instructions provided in the [INSTALLATION](INSTALLATION.md) file.
