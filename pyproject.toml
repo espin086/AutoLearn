@@ -1,0 +1,23 @@
+[project]
+name = "autolearn"
+version = "0.1.0"
+description = "Automated exploratory data analysis and machine learning model training using PyCaret and YData Profiling"
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+license = {text = "MIT"}
+authors = [
+    {name = "Javier Espinoza", email = "your.email@example.com"}
+]
+dependencies = [
+    "pandas==1.5.3",
+    "pycaret==3.3.2",
+    "streamlit==1.25.0",
+    "ydata-profiling==4.6.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+
